@@ -1,0 +1,22 @@
+@import 'variables';
+
+.task-list {
+    list-style: none;
+    padding: 0;
+  
+    li {
+      padding: 0.5rem;
+      background-color: $light-gray;
+      margin-bottom: 0.5rem;
+  
+      &.completed {
+        text-decoration: line-through;
+        color: green;
+      }
+  
+      &.pending {
+        color: red;
+      }
+    }
+  }
+  

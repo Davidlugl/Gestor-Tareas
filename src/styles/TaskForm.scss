@@ -1,0 +1,20 @@
+@import 'variables';
+
+.task-form {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+
+  input,
+  select {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+  }
+
+  button {
+    background-color: $secondary-color;
+    padding: 0.5rem 1rem;
+    border: none;
+    cursor: pointer;
+  }
+}

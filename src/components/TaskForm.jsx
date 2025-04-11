@@ -1,53 +1,49 @@
-import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { createTask, getTask, updateTask } from "../api/taskApi";
+import React, { useState } from "react";
+import { createTask } from "../services/api";
+import "../styles/TaskForm.scss";
 
-function TaskForm() {
-  const [task, setTask] = useState({ title: "", description: "" });
-  const navigate = useNavigate();
-  const { id } = useParams();
-
-  useEffect(() => {
-    if (id) {
-      getTask(id).then((res) => setTask(res.data));
-    }
-  }, [id]);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setTask({ ...task, [name]: value });
-  };
+const TaskForm = ({ onTaskCreated }) => {
+  const [title, setTitle] = useState("");
+  const [completed, setCompleted] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (id) {
-      await updateTask(id, task);
-    } else {
-      await createTask(task);
+    if (!title.trim()) return;
+
+    const newTask = {
+      title,
+      completed,
+      userId: 1,
+    };
+
+    try {
+      const response = await createTask(newTask);
+      onTaskCreated({ ...newTask, id: response.data.id });
+      setTitle("");
+      setCompleted(false);
+    } catch (error) {
+      alert("Error al crear la tarea");
     }
-    navigate("/");
   };
 
   return (
     <form onSubmit={handleSubmit} className="task-form">
       <input
         type="text"
-        name="title"
-        placeholder="Título"
-        value={task.title}
-        onChange={handleChange}
-        required
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        placeholder="Título de la tarea"
       />
-      <textarea
-        name="description"
-        placeholder="Descripción"
-        value={task.description}
-        onChange={handleChange}
-        required
-      ></textarea>
-      <button type="submit">{id ? "Actualizar" : "Crear"} Tarea</button>
+      <select
+        value={completed}
+        onChange={(e) => setCompleted(e.target.value === "true")}
+      >
+        <option value="false">Pendiente</option>
+        <option value="true">Completada</option>
+      </select>
+      <button type="submit">Crear</button>
     </form>
   );
-}
+};
 
 export default TaskForm;

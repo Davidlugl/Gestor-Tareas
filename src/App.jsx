@@ -1,25 +1,15 @@
-import { Routes, Route, Link } from "react-router-dom";
-import Home from "./pages/Home";
-import CreateTask from "./pages/CreateTask";
-import EditTask from "./pages/EditTask";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import TaskPage from "./pages/TaskPage";
 
 function App() {
   return (
-    <div className="container">
-      <h1>Gestor de Tareas</h1>
-      <nav>
-        <Link to="/">Inicio</Link>
-        <Link to="/create">Crear Tarea</Link>
-      </nav>
-
+    <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/create" element={<CreateTask />} />
-        <Route path="/edit/:id" element={<EditTask />} />
+        <Route path="/" element={<TaskPage />} />
+        <Route path="/tasks/:status" element={<TaskPage />} />
       </Routes>
-    </div>
+    </Router>
   );
 }
 
 export default App;
-

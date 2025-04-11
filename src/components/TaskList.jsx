@@ -1,30 +1,16 @@
-import { useEffect, useState } from "react";
-import { getTasks } from "../api/taskApi";
-import TaskItem from "./TaskItem";
+import React from "react";
+import "../styles/TaskList.scss";
 
-function TaskList() {
-  const [tasks, setTasks] = useState([]);
-
-  const loadTasks = async () => {
-    const res = await getTasks();
-    setTasks(res.data);
-  };
-
-  useEffect(() => {
-    loadTasks();
-  }, []);
-
+const TaskList = ({ tasks }) => {
   return (
-    <div className="task-list">
-      {tasks.length === 0 ? (
-        <p>No hay tareas registradas.</p>
-      ) : (
-        tasks.map((task) => (
-          <TaskItem key={task.id} task={task} onDelete={loadTasks} />
-        ))
-      )}
-    </div>
+    <ul className="task-list">
+      {tasks.map((task) => (
+        <li key={task.id} className={task.completed ? "completed" : "pending"}>
+          {task.title}
+        </li>
+      ))}
+    </ul>
   );
-}
+};
 
 export default TaskList;
